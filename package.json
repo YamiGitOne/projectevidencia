@@ -1,5 +1,5 @@
 {
-  "name": "project-evidencia",
+  "name": "projectevidence",
   "version": "1.0.0",
   "description": "proyecto para conectar API usando axios",
   "main": "index.js",

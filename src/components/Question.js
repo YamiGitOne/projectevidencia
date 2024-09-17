@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Question = ({ question }) => {
   switch (question.type) {
@@ -20,7 +20,7 @@ const Question = ({ question }) => {
       );
 
     case 'TEXT':
-      const textOption = question.options[0];  // Se asume que hay una opción para el input de texto
+      const textOption = question.options[0];
       return (
         <div>
           <label>{question.label}</label>
@@ -31,11 +31,11 @@ const Question = ({ question }) => {
             maxLength={textOption.input.max}
           />
         </div>
-      );
+      )
 
     default:
       return <p>Tipo de pregunta no soportado.</p>;
   }
-};
+}
 
-export default Question;
+export default Question

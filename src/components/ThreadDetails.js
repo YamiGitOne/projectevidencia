@@ -9,7 +9,6 @@ const ThreadDetails = ({ details }) => {
       <p>ID del Hilo: {details.id}</p>
       <p>Fecha de Creación: {details.created_at}</p>
       <p>Estado de aceptación: {details.accepted ? 'Aceptado' : 'No aceptado'}</p>
-      {/* Añade más información relevante según lo que devuelva la API */}
     </div>
   )
 }

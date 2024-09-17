@@ -7,12 +7,12 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/', // Importante para el enrutamiento con react-router-dom
+    publicPath: '/', 
   },
   mode: 'development',
   devServer: {
     historyApiFallback: true,
-    port: 3000,
+    port: 8080,
     static: {
       directory: path.resolve(__dirname, 'dist'),
     },
