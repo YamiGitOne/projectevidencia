@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const useThreadInfo = () => {
+const useThreadInfo = (cfskey, cfstoken) => {
   const [threadData, setThreadData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
     const fetchThreadInfo = async () => {
+      const baseUrl = process.env.REACT_APP_BASE_URL
       const cfskey = process.env.REACT_APP_CFSKEY
       const cfstoken = process.env.REACT_APP_CFSTOKEN
 
@@ -20,8 +21,8 @@ const useThreadInfo = () => {
 
       try {
         const response = await axios.get(
-          `https://api-sandbox.confirmsign.com/v4.0/threads/token/${cfskey}/${cfstoken}`
-        );
+          `${baseUrl}/${cfskey}/${cfstoken}`
+        )
         setThreadData(response.data)
         setLoading(false)
         console.log("Datos de la API:", response.data)
