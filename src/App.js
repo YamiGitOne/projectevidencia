@@ -12,7 +12,7 @@ function App() {
         <Route
           path="/"
           element={
-            <div>
+            <div className="container">
               <ThreadHeader />
               <ThreadInfo />
               <DynamicForm />

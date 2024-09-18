@@ -15,11 +15,11 @@ const DynamicForm = () => {
   const isClosed = threadData.closed
 
   return (
-    <div>
+    <div className='thread-form-container'>
       <h2>{form.title}</h2> 
 
       {form.questions.map((question) => (
-        <div key={question.qid} style={{ opacity: isClosed ? 0.5 : 1 }}>
+        <div className='thread-form' key={question.qid} style={{ opacity: isClosed ? 0.5 : 1 }}>
           <Question question={question} disabled={isClosed} />
         </div>
       ))}

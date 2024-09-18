@@ -14,15 +14,15 @@ const ThreadInfo = () => {
   }
 
   return (
-    <div>
+    <div className="thread-info">
       <h1>Información del Hilo</h1>
       <ThreadDetails details={threadData.details} />
 
       <div>
         <h2>Contenido del Hilo</h2>
         <div
+          className="thread-content"
           dangerouslySetInnerHTML={{ __html: threadData.content }}
-          style={{ padding: '10px', border: '1px solid #ddd', marginTop: '20px' }}
         />
       </div>
     </div>

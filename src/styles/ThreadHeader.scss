@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
+.container {
+  max-width: 1200px;  
+  margin: 0 auto;     
+  padding: 0 15px;    
+
+  @media (max-width: 1200px) {
+    max-width: 100%;  
+  }
+}
+
 body {
   font-family: 'Montserrat', sans-serif;
 }
@@ -11,8 +21,8 @@ body {
 
   .header-content {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    grid-gap: 10px; 
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
     align-items: center;
 
     p {
@@ -42,11 +52,11 @@ body {
 
   @media (max-width: 768px) {
     .header-content {
-      grid-template-columns: 1fr; 
+      grid-template-columns: 1fr;
     }
 
     p {
-      font-size: 16px; 
+      font-size: 16px;
     }
   }
 
@@ -56,11 +66,22 @@ body {
     }
 
     p {
-      font-size: 14px; 
+      font-size: 14px;
     }
   }
 }
 
+.thread-form {
+  text-align: center;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 20%);
+  padding: 20px;
+
+h2 {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+}
 .thread-info {
   h1 {
     font-size: 24px;
@@ -73,13 +94,13 @@ body {
 
   .thread-content {
     padding: 10px;
-    border: 1px solid #ddd;
     margin-top: 20px;
+    background-color: #f8fcff;
   }
 
   @media (max-width: 768px) {
     h1 {
-      font-size: 20px; 
+      font-size: 20px;
     }
 
     .thread-content {
@@ -90,7 +111,7 @@ body {
 
   @media (max-width: 480px) {
     h1 {
-      font-size: 18px; 
+      font-size: 18px;
     }
 
     .thread-content {
