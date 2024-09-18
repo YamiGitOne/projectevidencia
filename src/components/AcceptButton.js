@@ -9,8 +9,8 @@ const AcceptButton = () => {
     },
     content: 'Contenido inicial',
   });
-  const [accepting, setAccepting] = useState(false)
-  const [postError, setPostError] = useState(null)
+  const [accepting, setAccepting] = useState(false);
+  const [postError, setPostError] = useState(null);
 
   const handleCheckboxChange = (e) => {
     const { checked } = e.target;
@@ -28,33 +28,42 @@ const AcceptButton = () => {
 
   const validateThreadData = (data) => {
     if (typeof data.details !== 'object') {
-      console.error('El formato de threadData es incorrecto: "details" debe ser un objeto.')
-      return false
+      console.error('El formato de threadData es incorrecto: "details" debe ser un objeto.');
+      return false;
     }
 
     if (typeof data.content !== 'string') {
-      console.error('El formato de threadData es incorrecto: "content" debe ser una cadena.')
-      return false
+      console.error('El formato de threadData es incorrecto: "content" debe ser una cadena.');
+      return false;
     }
 
     if (!data.details.hasOwnProperty('id') || typeof data.details.id !== 'number') {
-      console.error('El formato de threadData es incorrecto: "details.id" debe ser un número y debe existir.')
-      return false
+      console.error('El formato de threadData es incorrecto: "details.id" debe ser un número y debe existir.');
+      return false;
     }
 
     return true
   }
 
   const handleAccept = async () => {
-    setAccepting(true)
+    setAccepting(true);
 
     if (!validateThreadData(threadData)) {
-      console.error('El formato de threadData es incorrecto.')
-      setPostError('El formato de los datos es incorrecto.')
+      console.error('El formato de threadData es incorrecto.');
+      setPostError('El formato de los datos es incorrecto.');
       setAccepting(false);
-      return
+      return;
     }
 
+    const postData = {
+      form: {
+        details: {
+          id: threadData.details.id,
+          optionChecked: threadData.details.optionChecked,
+        },
+        content: threadData.content,
+      },
+    }
 
     try {
       const baseUrl = process.env.REACT_APP_BASE_URL
@@ -67,26 +76,28 @@ const AcceptButton = () => {
 
       const postUrl = `${baseUrl}/${cfskey}/${cfstoken}/agreement/true`
 
-      const response = await axios.post(postUrl, threadData, {
+      const response = await axios.post(postUrl, postData, {
         headers: {
           'Content-Type': 'application/json',
         },
-      });
+      })
 
+      console.log('Respuesta del POST:', response.data)
       setAccepting(false)
     } catch (err) {
       console.error('Error al aceptar el hilo:', err.response || err.message)
       setPostError(`Error: ${err.response?.data?.message || err.message}`)
-      setAccepting(false)
+      setAccepting(false);
     }
   }
+
   return (
     <div style={{ marginTop: '20px' }}>
       <label>
         <input
           type="checkbox"
-          checked={threadData.details.optionChecked} 
-          onChange={handleCheckboxChange} 
+          checked={threadData.details.optionChecked}
+          onChange={handleCheckboxChange}
         />
         Aceptar opción
       </label>
