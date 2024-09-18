@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const AcceptButton = () => {
   const [threadData, setThreadData] = useState({
@@ -8,23 +8,19 @@ const AcceptButton = () => {
       optionChecked: false,
     },
     content: 'Contenido inicial',
+    closed: false, // Para saber si el hilo ya está aceptado
+    agreement: {
+      accept_button_text: 'Aceptar' // El texto del botón, ejemplo
+    }
   });
   const [accepting, setAccepting] = useState(false);
   const [postError, setPostError] = useState(null);
+  const [accepted, setAccepted] = useState(threadData.closed); // Estado para saber si está aceptado
 
-  const handleCheckboxChange = (e) => {
-    const { checked } = e.target;
-
-    setThreadData((prevData) => ({
-      ...prevData,
-      details: {
-        ...prevData.details,
-        optionChecked: checked,
-      },
-    }))
-
-    console.log('Nuevo estado de threadData:', threadData)
-  }
+  // Al actualizar los datos del hilo, cambiar el estado "accepted"
+  useEffect(() => {
+    setAccepted(threadData.closed);
+  }, [threadData]);
 
   const validateThreadData = (data) => {
     if (typeof data.details !== 'object') {
@@ -42,7 +38,7 @@ const AcceptButton = () => {
       return false;
     }
 
-    return true
+    return true;
   }
 
   const handleAccept = async () => {
@@ -64,54 +60,61 @@ const AcceptButton = () => {
         content: threadData.content,
       },
     }
+   
 
     try {
-      const baseUrl = process.env.REACT_APP_BASE_URL
-      const cfskey = process.env.REACT_APP_CFSKEY
-      const cfstoken = process.env.REACT_APP_CFSTOKEN
+      const baseUrl = process.env.REACT_APP_BASE_URL;
+      const cfskey = process.env.REACT_APP_CFSKEY;
+      const cfstoken = process.env.REACT_APP_CFSTOKEN;
 
       if (!baseUrl || !cfskey || !cfstoken) {
-        throw new Error('Faltan configuraciones en las variables de entorno')
+        throw new Error('Faltan configuraciones en las variables de entorno');
       }
 
-      const postUrl = `${baseUrl}/${cfskey}/${cfstoken}/agreement/true`
+      const postUrl = `${baseUrl}/${cfskey}/${cfstoken}/agreement/true`;
 
       const response = await axios.post(postUrl, postData, {
         headers: {
           'Content-Type': 'application/json',
         },
-      })
+      });
 
-      console.log('Respuesta del POST:', response.data)
-      setAccepting(false)
+      console.log('Respuesta del POST:', response.data);
+
+      // Si la respuesta es exitosa y el hilo se cierra, actualizamos el estado
+      if (response.data.closed) {
+        setAccepted(true);
+        setThreadData(prevData => ({
+          ...prevData,
+          closed: true,
+        }));
+      }
+
+      setAccepting(false);
     } catch (err) {
-      console.error('Error al aceptar el hilo:', err.response || err.message)
-      setPostError(`Error: ${err.response?.data?.message || err.message}`)
+      console.error('Error al aceptar el hilo:', err.response || err.message);
+      setPostError(`Error: ${err.response?.data?.message || err.message}`);
       setAccepting(false);
     }
-  }
+  };
 
   return (
     <div style={{ marginTop: '20px' }}>
-      <label>
-        <input
-          type="checkbox"
-          checked={threadData.details.optionChecked}
-          onChange={handleCheckboxChange}
-        />
-        Aceptar opción
-      </label>
-
       {postError && <p style={{ color: 'red' }}>Error: {postError}</p>}
-      <button
-        onClick={handleAccept}
-        disabled={accepting}
-        style={{ padding: '10px 20px', backgroundColor: 'green', color: 'white', border: 'none', cursor: 'pointer' }}
-      >
-        {accepting ? 'Aceptando...' : 'Aceptar'}
-      </button>
+
+      {!accepted ? (
+        <button
+          onClick={handleAccept}
+          disabled={accepting}
+          style={{ padding: '10px 20px', backgroundColor: 'green', color: 'white', border: 'none', cursor: 'pointer' }}
+        >
+          {accepting ? 'Aceptando...' : threadData.agreement.accept_button_text || 'Aceptar'}
+        </button>
+      ) : (
+        <p>El hilo ha sido aceptado.</p> // Mostrar mensaje cuando el hilo ya esté aceptado
+      )}
     </div>
-  )
+  );
 }
 
-export default AcceptButton
+export default AcceptButton;
