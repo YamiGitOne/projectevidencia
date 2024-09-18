@@ -12,13 +12,15 @@ const DynamicForm = () => {
 
   if (!form) return <p>No hay formulario disponible</p>
 
+  const isClosed = threadData.closed
+
   return (
     <div>
       <h2>{form.title}</h2> 
 
       {form.questions.map((question) => (
-        <div key={question.qid}>
-          <Question question={question} />
+        <div key={question.qid} style={{ opacity: isClosed ? 0.5 : 1 }}>
+          <Question question={question} disabled={isClosed} />
         </div>
       ))}
     </div>
