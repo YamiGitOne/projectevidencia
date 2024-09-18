@@ -2,22 +2,24 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/', 
+    publicPath: '/',
   },
-  mode: 'development',
-  devServer: {
+  mode: isDevelopment ? 'development' : 'production',
+  devServer: isDevelopment ? {
     historyApiFallback: true,
     port: 3000,
     static: {
       directory: path.resolve(__dirname, 'dist'),
     },
     open: true,
-  },
+  } : undefined,
   module: {
     rules: [
       {
